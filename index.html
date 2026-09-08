@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#4f46e5" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <title>WorkOrders</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234f46e5'/><path d='M28 52l14 14 30-32' stroke='white' stroke-width='10' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ===================== login ===================== -->
+  <div id="auth-screen" hidden>
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="mark">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <strong id="auth-appname">WorkOrders</strong>
+      </div>
+
+      <!-- step 1: email -->
+      <form id="email-form">
+        <h1>Sign in</h1>
+        <p class="sub">We'll email you a 6-digit code. No password to remember.</p>
+        <div class="field">
+          <label for="email-input">Work email</label>
+          <input class="input" type="email" id="email-input" name="email"
+                 autocomplete="email" inputmode="email" required placeholder="you@company.com" />
+        </div>
+        <p class="error-text" id="email-error" hidden></p>
+        <button class="btn btn-primary btn-block" type="submit" id="email-submit">Send code</button>
+      </form>
+
+      <!-- step 2: code -->
+      <form id="code-form" hidden>
+        <h1>Check your email</h1>
+        <p class="sub">We sent a 6-digit code to <strong id="code-email"></strong>.</p>
+        <div class="field">
+          <label for="code-input">6-digit code</label>
+          <input class="input" type="text" id="code-input" name="code"
+                 inputmode="numeric" autocomplete="one-time-code" maxlength="6"
+                 required placeholder="123456"
+                 style="letter-spacing:.4em; font-size:19px; text-align:center; font-weight:600" />
+        </div>
+        <p class="error-text" id="code-error" hidden></p>
+        <button class="btn btn-primary btn-block" type="submit" id="code-submit">Sign in</button>
+        <button class="btn btn-ghost btn-block" type="button" id="code-back" style="margin-top:8px">
+          Use a different email
+        </button>
+      </form>
+
+      <div class="demo-banner" id="demo-banner" hidden>
+        <strong>Demo mode.</strong> Data is stored in this browser only and nothing is shared
+        with your team. Sign in with any email and the code <strong>123456</strong>.
+        Add your Supabase keys to <code>config.js</code> to go live.
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== app ===================== -->
+  <div id="main-screen" hidden>
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <span id="brand-name">WorkOrders</span>
+      </div>
+      <div id="viewas-slot"></div>
+      <div class="spacer"></div>
+      <button class="btn btn-primary btn-sm" id="top-new" style="display:none">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        New job
+      </button>
+      <div class="usermenu">
+        <button class="btn btn-ghost btn-icon" id="user-btn" aria-label="Account"></button>
+        <div class="usermenu-pop" id="user-pop" hidden></div>
+      </div>
+    </header>
+
+    <nav class="sidenav" id="sidenav"></nav>
+
+    <main class="content" id="view-root"></main>
+
+    <button class="fab" id="fab" aria-label="New work order">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+    </button>
+
+    <nav class="tabbar" id="tabbar"></nav>
+  </div>
+
+  <div id="modal-root"></div>
+  <div id="toast-root"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="config.js"></script>
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
